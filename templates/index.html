@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Would you have survived the Titanic?</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+
+    <!-- Custom CSS (loaded after Bootstrap) -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="container mt-5 center-content">
+      <div class="card p-4" style="width: 36rem">
+        <h2 class="text-center">Titanic Survival Prediction</h2>
+
+        <form action="/predict" method="POST">
+          <div class="form-content">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="Pclass">Passenger Class:</label>
+                  <select name="Pclass" class="form-control">
+                    <option value="1" {% if preselected_values['Pclass'] == 1 %}selected{% endif %}>First Class</option>
+                    <option value="2" {% if preselected_values['Pclass'] == 2 %}selected{% endif %}>Second Class</option>
+                    <option value="3" {% if preselected_values['Pclass'] == 3 %}selected{% endif %}>Third Class</option>
+                  </select>
+                </div>
+              
+                <div class="form-group col-md-6">
+                  <label for="Age">Age:</label>
+                  <input
+                    type="number"
+                    name="Age"
+                    value="{{ preselected_values['Age'] }}"
+                    min="1"
+                    max="100"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="Sex">Sex:</label>
+                  <select name="Sex" class="form-control">
+                    <option value="male" {% if preselected_values['Sex'] == 'male' %}selected{% endif %}>Male</option>
+                    <option value="female" {% if preselected_values['Sex'] == 'female' %}selected{% endif %}>Female</option>
+                  </select>
+                </div>
+              
+                <div class="form-group col-md-6">
+                  <label for="travel_party">Number of people traveling with you:</label>
+                  <input
+                    type="number"
+                    name="travel_party"
+                    value="{{ preselected_values['travel_party'] }}"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            <div class="form-footer">
+              <button type="submit" class="btn btn-primary btn-block" id="form-button">
+                Would you survive?
+              </button>
+            </div>
+        </form>
+        <div class = "form-footer">
+            <h3 class="text-center text-info">              {% if survival_prediction == 1 %}
+                You have a <strong>{{ survival_chance }}%</strong> chance of survival.
+              {% else %}
+                You have a <strong>{{ non_survival_chance }}%</strong> chance of survival.
+              {% endif %}
+            </h3>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
